@@ -1,7 +1,17 @@
 from fastapi.testclient import TestClient
 
+from assiette.llm import GroqLLM
 from backend.api import app
 from backend.db.seed import seed_distributions
+
+
+def _forbid_groq_complete(monkeypatch):
+    monkeypatch.setattr(GroqLLM, "available", property(lambda self: True))
+
+    def _boom(*_args, **_kwargs):
+        raise AssertionError("GroqLLM.complete must not run when use_llm=False")
+
+    monkeypatch.setattr(GroqLLM, "complete", _boom)
 
 
 def test_health_and_query_grounding():
@@ -45,7 +55,8 @@ def test_retrieve_is_cacheable():
     assert again.status_code in {200, 304}
 
 
-def test_compose_drops_forged_place_id():
+def test_compose_drops_forged_place_id(monkeypatch):
+    _forbid_groq_complete(monkeypatch)
     seed_distributions()
     client = TestClient(app)
     retrieved = client.get("/retrieve", params={"arrondissement": 5, "meal": "lunch", "use_network": False})
@@ -204,7 +215,14 @@ def test_retrieve_rejects_invalid_arrondissement():
     assert resp.status_code == 422
 
 
-def test_query_ignores_free_text_and_uses_template():
+def test_retrieve_rejects_invalid_meal():
+    client = TestClient(app)
+    resp = client.get("/retrieve", params={"meal": "brunch", "use_network": False})
+    assert resp.status_code == 422
+
+
+def test_query_ignores_free_text_and_uses_template(monkeypatch):
+    _forbid_groq_complete(monkeypatch)
     seed_distributions()
     client = TestClient(app)
     resp = client.post(

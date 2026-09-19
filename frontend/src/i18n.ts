@@ -33,7 +33,7 @@ const copy = {
     trustCommunitySub: "Good food belongs to everyone",
     askHeading: "What's on the menu?",
     askLead:
-      "Type a sentence in English or French, or start from a preset. Chips refine the search. Find fetches live data. Tickets only appear for venues we already retrieved.",
+      "Optional chips narrow your search, or start from a preset. Find fetches live venues. Tickets only appear for places we already retrieved.",
     askLabel: "Choose filters",
     queryPlaceholder: "I live in the 13th, €3 budget, dinner after 18:00",
     arr: "Arrondissement",
@@ -186,7 +186,7 @@ const copy = {
     trustCommunitySub: "Bien manger, c’est pour tout le monde",
     askHeading: "Quoi au menu ?",
     askLead:
-      "Écrivez une phrase en anglais ou en français, ou partez d’un exemple. Les pastilles affinent la recherche. Trouver récupère les données en direct. Les tickets ne montrent que des lieux déjà trouvés.",
+      "Des pastilles optionnelles affinent la recherche, ou partez d’un exemple. Trouver récupère les lieux en direct. Les tickets ne montrent que des endroits déjà trouvés.",
     askLabel: "Choisir des filtres",
     queryPlaceholder: "Je vis dans le 13e, budget 3 €, dîner après 18h",
     arr: "Arrondissement",

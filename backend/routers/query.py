@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
+from typing import Literal
 from email.utils import format_datetime
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
@@ -72,10 +73,10 @@ def retrieve(
     response: Response,
     arrondissement: int | None = Query(default=None, ge=1, le=20),
     budget_eur: float | None = Query(default=None, ge=0, le=100),
-    meal: str | None = Query(default=None),
-    diet: str = Query(default="any"),
+    meal: Literal["breakfast", "lunch", "dinner", "any"] | None = Query(default=None),
+    diet: Literal["any", "vegetarian", "vegan", "halal"] = Query(default="any"),
     bursary: bool = False,
-    category: str = Query(default="any"),
+    category: Literal["any", "crous", "distribution"] = Query(default="any"),
     use_network: bool = True,
     refresh: bool = False,
     db: Session = Depends(get_db),
@@ -83,10 +84,10 @@ def retrieve(
     req = QueryRequest(
         arrondissement=arrondissement,
         budget_eur=budget_eur,
-        meal=meal,  # type: ignore[arg-type]
-        diet=diet,  # type: ignore[arg-type]
+        meal=meal,
+        diet=diet,
         bursary=bursary,
-        category=category,  # type: ignore[arg-type]
+        category=category,
         use_network=use_network,
         refresh=refresh,
     )
