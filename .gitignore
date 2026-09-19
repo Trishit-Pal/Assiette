@@ -16,3 +16,5 @@ ci_assiette.db
 frontend/node_modules/
 frontend/dist/
 graphify-out/
+.vercel
+.env*
