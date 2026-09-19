@@ -1,0 +1,16 @@
+{
+  "nodes": [
+    {"id": "a0c1e2f304152637", "type": "group", "x": -40, "y": -40, "width": 520, "height": 860, "color": "4", "label": "Home column — --max 44rem"},
+    {"id": "d3f405162738495a", "type": "text", "x": 0, "y": 300, "width": 440, "height": 280, "color": "5", "text": "# MCQ — 6 fieldsets, no textarea, no Next"},
+    {"id": "e405162738495a6b", "type": "text", "x": 0, "y": 620, "width": 440, "height": 100, "color": "4", "text": "# Find food → GET /retrieve"},
+    {"id": "061738495a6b7c8d", "type": "group", "x": 560, "y": -40, "width": 520, "height": 720, "color": "6", "label": "#results patch"},
+    {"id": "28395a6b7c8d9e0f", "type": "text", "x": 600, "y": 160, "width": 440, "height": 220, "color": "3", "text": "# Numbered map 01-10 ↔ tickets"},
+    {"id": "394a6b7c8d9e0f10", "type": "text", "x": 600, "y": 420, "width": 440, "height": 140, "text": "# Ticket stack same ids"},
+    {"id": "5b6c8d9e0f102132", "type": "group", "x": 1160, "y": -40, "width": 420, "height": 520, "color": "1", "label": "Out of scope"},
+    {"id": "6c7d9e0f10213243", "type": "text", "x": 1200, "y": 0, "width": 340, "height": 440, "color": "1", "text": "No Overpass, stepper, new palette, MapLibre, hours hard-empty"}
+  ],
+  "edges": [
+    {"id": "9f00102132434567", "fromNode": "e405162738495a6b", "fromSide": "right", "toNode": "28395a6b7c8d9e0f", "toSide": "left", "toEnd": "arrow", "label": "same ≤10 ids"},
+    {"id": "b12232434556789a", "fromNode": "28395a6b7c8d9e0f", "fromSide": "bottom", "toNode": "394a6b7c8d9e0f10", "toSide": "top", "toEnd": "arrow", "label": "two-way highlight"}
+  ]
+}

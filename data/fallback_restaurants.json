@@ -1,0 +1,1237 @@
+{
+  "success": true,
+  "data": [
+    {
+      "code": 1637,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 6,
+        "libelle": "Libre-service"
+      },
+      "nom": "Libre-service sorbonne - clignancourt",
+      "adresse": "4 rue Francis de Croisset, 75018 Paris",
+      "latitude": 48.89969,
+      "longitude": 2.3467278,
+      "horaires": "[\"Du lundi au vendredi de 9h30 à 17h30\", \"Le samedi de 10h00 à 15h00\", \"Vente à emporter\", \"Accessible aux étudiants et personnels de Sorbonne Université\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/1637/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 18",
+      "paiement": "[\"Espèces\"]",
+      "acces": "[\"Métro : Porte de Clignancourt, ligne 4\"]",
+      "ouvert": true
+    },
+    {
+      "code": 2199,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru nation",
+      "adresse": "8 Avenue de Saint-Mandé, 75012 Paris, France",
+      "latitude": 48.84543,
+      "longitude": 2.396657,
+      "horaires": "[\"Du lundi au vendredi de 11h30 à 14h\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/2199/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": true,
+      "zone": "Paris 12",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"Métro Nation : ligne 1, 6\", \"RER A : Nation\", \"Bus 86 : Nation - Saint Antoine\", \"Bus 29 : Fabre d'Eglantine\"]",
+      "ouvert": true
+    },
+    {
+      "code": 1572,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru clignancourt",
+      "adresse": "17 rue Francis de Croisset, 75018 Paris",
+      "latitude": 48.89947,
+      "longitude": 2.3443396,
+      "horaires": "[\"Du lundi au vendredi de 11h à 14h.\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": true
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/1572/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 18",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"Métro 4 Porte de Clignancourt\", \"Tram 3b Porte de Clignancourt\", \"\"]",
+      "ouvert": true
+    },
+    {
+      "code": 806,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru châtelet",
+      "adresse": "10 rue Jean Calvin 75005 Paris",
+      "latitude": 48.841743,
+      "longitude": 2.348543,
+      "horaires": "[\"Du lundi au vendredi de 11h30 à 14h00.\", \"Un guichet Izly est à votre disposition à l'entrée de 11h30 à 14h.\", \"Accessible à tout étudiant.\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/806/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 05",
+      "paiement": "[\"Espèces\", \"IZLY\"]",
+      "acces": "[\"Métro : Censier-Daubenton ou Place Monge\"]",
+      "ouvert": true
+    },
+    {
+      "code": 809,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru bullier",
+      "adresse": "39 avenue Georges Bernanos 75005 Paris",
+      "latitude": 48.8401,
+      "longitude": 2.3373718,
+      "horaires": "[\"Du lundi au vendredi de 11h30 à 14h00\", \"Accessible à tout étudiant\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/809/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 05",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"RER B : Port-Royal\"]",
+      "ouvert": true
+    },
+    {
+      "code": 815,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru cuvier",
+      "adresse": "4 place Jussieu 75005 Paris",
+      "latitude": 48.84752,
+      "longitude": 2.354047,
+      "horaires": "[\"Du lundi au vendredi de 11h30 à 14h00\", \"Accessible aux étudiants de Sorbonne Université.\", \"Un guichet Izly est à votre disposition dans le hall de 11h30 à 14h.\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/815/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 05",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"Métro : Jussieu\", \"Bus : 63, 24, 67, 89\"]",
+      "ouvert": true
+    },
+    {
+      "code": 816,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru dauphine",
+      "adresse": "2 boulevard Lannes 75116 Paris",
+      "latitude": 48.87016,
+      "longitude": 2.2741103,
+      "horaires": "[\"Du lundi au vendredi de 11h20 à 14h15\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": true
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/816/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 16",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"Métro : Porte Dauphine\", \"RER : Avenue Foch\"]",
+      "ouvert": true
+    },
+    {
+      "code": 817,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru de la halle aux farines",
+      "adresse": "3 esplanade Pierre Vidal Naquet 75013 Paris",
+      "latitude": 48.829906,
+      "longitude": 2.38214,
+      "horaires": "[\"Du lundi au vendredi de 11h15 à 14h15\", \"Accessible à tout étudiant et personnel d'établissement d'enseignement supérieur.\", \"Un guichet Izly est à votre disposition à l'entrée de 11h15 à 14h15.\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/817/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 13",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"RER C, Métro : Bibliothèque F. Mitterrand\"]",
+      "ouvert": true
+    },
+    {
+      "code": 831,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 2,
+        "libelle": "Cafétéria"
+      },
+      "nom": "Libre-service grands moulins",
+      "adresse": "14 esplanade Pierre Vidal Naquet 75013 Paris",
+      "latitude": 48.82965,
+      "longitude": 2.381136,
+      "horaires": "[\"Du lundi au vendredi de 10h à 16h30\", \"Vente à emporter\", \"Accessible à tout étudiant et personnel d'établissement d'enseignement supérieur.\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/831/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": true,
+      "zone": "Paris 13",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"Métro, RER C : Bibliothèque F. Mitterrand\"]",
+      "ouvert": true
+    },
+    {
+      "code": 1328,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru cité internationale",
+      "adresse": "23 boulevard Jourdan 75014 Paris",
+      "latitude": 48.82002,
+      "longitude": 2.3386934,
+      "horaires": "[\"Du lundi au vendredi\", \"11h30-14h00\", \"- 18h30-21h00\", \"Samedi :\", \"- 10h00-15h00\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": true
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": true
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": true
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": true
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/1328/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 14",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"RER B : Cité Universitaire\", \"Tramway : T3 - Montsouris\"]",
+      "ouvert": true
+    },
+    {
+      "code": 1344,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru de la barge",
+      "adresse": "Port de la Gare Quai François Mauriac 75013 Paris",
+      "latitude": 48.833893,
+      "longitude": 2.3775918,
+      "horaires": "[\"Du lundi au vendredi de 11h30 à 14h00.\", \"Le RU rouvrira les samedis en septembre\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/1344/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 13",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"Métro 14 arrêt Quai de la Gare,\", \"RER C arrêt Bibliothèque François Mitterrand\"]",
+      "ouvert": true
+    },
+    {
+      "code": 820,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru mabillon",
+      "adresse": "3 rue Mabillon 75006 Paris",
+      "latitude": 48.852634,
+      "longitude": 2.3353672,
+      "horaires": "[\"Du lundi au vendredi de 11h30 à 14h00.\", \"Accessible à tout étudiant.\", \"Un guichet Izly est à votre disposition de 11h30 à 14h00.\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/820/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 06",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"Métro : Mabillon\"]",
+      "ouvert": true
+    },
+    {
+      "code": 828,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 2,
+        "libelle": "Cafétéria"
+      },
+      "nom": "Cafétéria villemin",
+      "adresse": "10 avenue de Verdun 75010 Paris",
+      "latitude": 48.87609,
+      "longitude": 2.3616168,
+      "horaires": "[\"Du lundi au jeudi de 8h00 à 16h00\", \"Le vendredi de 8h00 à 15h00\", \"Vente à emporter\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/828/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": false,
+      "zone": "Paris 10",
+      "paiement": "[\"Espèces\"]",
+      "acces": "[\"Métro : Château Landon\"]",
+      "ouvert": true
+    },
+    {
+      "code": 1692,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 1,
+        "libelle": "Restaurant"
+      },
+      "nom": "Ru saints-pères",
+      "adresse": "45 rue des Saints-Pères 75006 Paris",
+      "latitude": 48.855305,
+      "longitude": 2.33183,
+      "horaires": "[\"Du lundi au vendredi de 11h30 à 14h00\", \"Accessible aux étudiants d'Université de Paris.\", \"\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": false,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": null,
+      "email": null,
+      "telephone": null,
+      "ispmr": true,
+      "zone": "Paris 06",
+      "paiement": "[\"IZLY\"]",
+      "acces": null,
+      "ouvert": true
+    },
+    {
+      "code": 1774,
+      "region": {
+        "code": 22,
+        "libelle": "Paris"
+      },
+      "type": {
+        "code": 2,
+        "libelle": "Cafétéria"
+      },
+      "nom": "Libre-service pierre mendès france",
+      "adresse": "31 Rue Baudricourt, 75013 Paris",
+      "latitude": 48.827435,
+      "longitude": 2.364424,
+      "horaires": "[\"Du lundi au vendredi de 8h45 à 18h\", \"Vente à emporter\", \"Accessible aux étudiants et personnels de l'Université Paris I Panthéon-Sorbonne\"]",
+      "jours_ouvert": [
+        {
+          "jour": "Lundi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mardi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Mercredi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Jeudi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Vendredi",
+          "ouverture": {
+            "matin": true,
+            "midi": true,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Samedi",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        },
+        {
+          "jour": "Dimanche",
+          "ouverture": {
+            "matin": false,
+            "midi": false,
+            "soir": false
+          }
+        }
+      ],
+      "image_url": "https://api.croustillant.menu/v1/restaurants/1774/preview",
+      "email": null,
+      "telephone": null,
+      "ispmr": true,
+      "zone": "Paris 13",
+      "paiement": "[\"IZLY\"]",
+      "acces": "[\"Métro : Olympiades (ligne 14)\"]",
+      "ouvert": true
+    }
+  ],
+  "source": "CROUStillant snapshot 2026-09-03",
+  "fetched_at": "2026-09-03"
+}

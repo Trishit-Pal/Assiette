@@ -1,0 +1,128 @@
+:root {
+  --ink: #1a1712;
+  --paper: #efe7d4;
+  --sheet: #fffaf0;
+  --accent: #b8431a;
+  --rule: #cfc3a6;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(280px, 420px) 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+  background:
+    repeating-linear-gradient(transparent, transparent 27px, rgba(180, 80, 40, 0.06) 28px),
+    var(--paper);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", sans-serif;
+}
+.crumb { grid-column: 1 / -1; margin: 0; font-size: 0.85rem; }
+.crumb a { color: var(--accent); }
+.phone {
+  background: var(--sheet);
+  border: 2.5px solid var(--ink);
+  border-radius: 28px 32px 24px 36px;
+  padding: 1.1rem 1rem 1.4rem;
+  box-shadow: 8px 10px 0 rgba(26, 23, 18, 0.85);
+  transform: rotate(-0.6deg);
+}
+.notch {
+  width: 88px; height: 8px; background: var(--ink); border-radius: 8px; margin: 0 auto 0.8rem;
+}
+.top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem; }
+.brand { font-family: Caveat, cursive; font-size: 1.8rem; }
+.lang, .back { font-size: 0.75rem; letter-spacing: 0.04em; }
+.hand { font-family: Caveat, cursive; font-size: 1.45rem; margin: 0.2rem 0 0.6rem; }
+.hand.small { font-size: 1.15rem; margin-bottom: 0.25rem; }
+.input-box {
+  border: 2px dashed var(--ink);
+  border-radius: 4px 14px 6px 10px;
+  padding: 0.7rem;
+  min-height: 4.2rem;
+  color: #6b6458;
+  margin-bottom: 0.6rem;
+}
+.go {
+  width: 100%;
+  background: var(--accent);
+  color: #fffaf0;
+  border: 2px solid var(--ink);
+  padding: 0.55rem;
+  font: inherit;
+  font-weight: 600;
+  border-radius: 3px 12px 5px 9px;
+  margin-bottom: 0.8rem;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.8rem; }
+.chips span {
+  border: 1.5px solid var(--ink);
+  padding: 0.2rem 0.5rem;
+  font-size: 0.78rem;
+  border-radius: 999px;
+}
+.filters { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+.f { border: 1.5px solid var(--ink); padding: 0.35rem 0.5rem; border-radius: 2px 10px 4px 8px; }
+.f span { display: block; font-size: 0.68rem; color: #5c564c; }
+.footnote, .stamp { font-size: 0.72rem; color: #5a544a; }
+.footnote { margin-top: 0.9rem; }
+.map {
+  position: relative;
+  height: 110px;
+  border: 2px solid var(--ink);
+  border-radius: 6px 16px 8px 12px;
+  margin: 0.4rem 0 0.7rem;
+  background:
+    linear-gradient(90deg, transparent 19px, var(--rule) 20px),
+    linear-gradient(transparent 19px, var(--rule) 20px);
+  background-size: 20px 20px;
+}
+.map.mini { height: 80px; }
+.pin {
+  position: absolute;
+  width: 22px; height: 22px;
+  background: var(--accent); color: #fffaf0;
+  border: 2px solid var(--ink); border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  font-size: 0.7rem; display: grid; place-items: center;
+}
+.pin span, .pin { font-weight: 600; }
+.p1 { top: 38%; left: 58%; }
+.p2 { top: 52%; left: 42%; }
+.p3 { top: 28%; left: 30%; }
+.maplabel { position: absolute; bottom: 4px; left: 8px; font-size: 0.68rem; background: var(--sheet); padding: 0 4px; }
+.card {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 0.5rem;
+  border: 2px solid var(--ink);
+  border-radius: 4px 14px 6px 10px;
+  padding: 0.5rem 0.55rem;
+  margin-bottom: 0.45rem;
+}
+.card.first { background: #f8e6d4; }
+.card h2 { margin: 0; font-size: 0.95rem; }
+.card p { margin: 0.15rem 0; font-size: 0.78rem; }
+.rank { font-family: Caveat, cursive; font-size: 1.6rem; color: var(--accent); }
+.why { color: #3f3a32; }
+.title { font-family: Caveat, cursive; font-size: 2rem; margin: 0 0 0.3rem; }
+.kicker { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; margin: 0; }
+section { border-top: 1.5px dashed var(--ink); padding: 0.45rem 0; }
+section h2 { margin: 0 0 0.2rem; font-size: 0.85rem; }
+section p { margin: 0; font-size: 0.82rem; line-height: 1.4; }
+blockquote {
+  margin: 0.35rem 0;
+  padding: 0.4rem 0.5rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 2px 10px 4px 8px;
+  font-size: 0.82rem;
+  background: #fff;
+}
+aside { padding-top: 1rem; }
+aside h1 { font-size: 2.2rem; margin: 0 0 0.6rem; }
+aside ul { padding-left: 1.1rem; line-height: 1.55; max-width: 48ch; }
+@media (max-width: 800px) {
+  body { grid-template-columns: 1fr; }
+}

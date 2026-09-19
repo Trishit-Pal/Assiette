@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: assiette
+      POSTGRES_PASSWORD: assiette
+      POSTGRES_DB: assiette
+    ports:
+      - "5432:5432"
+    volumes:
+      - assiette_pg:/var/lib/postgresql/data
+  api:
+    build: .
+    command: uvicorn backend.api:app --host 0.0.0.0 --port 8000
+    environment:
+      DATABASE_URL: postgresql+psycopg2://assiette:assiette@db:5432/assiette
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      SECRET_KEY: ${SECRET_KEY:-dev-secret}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+volumes:
+  assiette_pg:

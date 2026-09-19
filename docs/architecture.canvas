@@ -1,0 +1,128 @@
+{
+  "nodes": [
+    {
+      "id": "a1b2c3d4e5f67890",
+      "type": "text",
+      "x": -40,
+      "y": -40,
+      "width": 1320,
+      "height": 720,
+      "color": "4",
+      "text": "# Assiette production topology"
+    },
+    {
+      "id": "b2c3d4e5f678901a",
+      "type": "text",
+      "x": 20,
+      "y": 40,
+      "width": 280,
+      "height": 180,
+      "text": "# Vite SPA\n\nCloudflare-style CDN via Vercel. Polls `GET /retrieve` with ETag. Never auto-reruns Groq."
+    },
+    {
+      "id": "c3d4e5f678901a2b",
+      "type": "text",
+      "x": 360,
+      "y": 40,
+      "width": 300,
+      "height": 180,
+      "color": "5",
+      "text": "# FastAPI on Vercel\n\n`api/index.py` ASGI. `/retrieve` cacheable, `/compose` no-store, `/query` wrapper."
+    },
+    {
+      "id": "d4e5f678901a2b3c",
+      "type": "text",
+      "x": 720,
+      "y": 40,
+      "width": 260,
+      "height": 180,
+      "text": "# Layered cache\n\nL1 process LRU → L2 Upstash REST → L3 `fallback_restaurants.json` + DB snapshot."
+    },
+    {
+      "id": "e5f678901a2b3c4d",
+      "type": "text",
+      "x": 1040,
+      "y": 40,
+      "width": 240,
+      "height": 180,
+      "color": "6",
+      "text": "# Neon Postgres\n\nPooled URL + SQLAlchemy NullPool. Alembic on deploy."
+    },
+    {
+      "id": "f678901a2b3c4d5e",
+      "type": "text",
+      "x": 360,
+      "y": 280,
+      "width": 300,
+      "height": 160,
+      "text": "# CROUStillant\n\nWarmed by GitHub Actions every 6h via `backend.refresh.worker` (CLI)."
+    },
+    {
+      "id": "1678901a2b3c4d5f",
+      "type": "text",
+      "x": 720,
+      "y": 280,
+      "width": 260,
+      "height": 160,
+      "color": "2",
+      "text": "# Groq\n\nJSON object parse + itinerary. Circuit breaker → template fallback. Grounding drops unknown ids."
+    },
+    {
+      "id": "278901a2b3c4d5e6",
+      "type": "text",
+      "x": 20,
+      "y": 280,
+      "width": 280,
+      "height": 160,
+      "color": "3",
+      "text": "# GitHub Actions\n\nCI, Alembic deploy, 6-hour `python -m backend.refresh.worker` cron. Auto-disables after 60 days idle."
+    }
+  ],
+  "edges": [
+    {
+      "id": "38901a2b3c4d5e67",
+      "fromNode": "b2c3d4e5f678901a",
+      "fromSide": "right",
+      "toNode": "c3d4e5f678901a2b",
+      "toSide": "left",
+      "label": "GET /retrieve"
+    },
+    {
+      "id": "4901a2b3c4d5e678",
+      "fromNode": "c3d4e5f678901a2b",
+      "fromSide": "right",
+      "toNode": "d4e5f678901a2b3c",
+      "toSide": "left"
+    },
+    {
+      "id": "5a01a2b3c4d5e679",
+      "fromNode": "d4e5f678901a2b3c",
+      "fromSide": "right",
+      "toNode": "e5f678901a2b3c4d",
+      "toSide": "left"
+    },
+    {
+      "id": "6b01a2b3c4d5e67a",
+      "fromNode": "c3d4e5f678901a2b",
+      "fromSide": "bottom",
+      "toNode": "f678901a2b3c4d5e",
+      "toSide": "top"
+    },
+    {
+      "id": "7c01a2b3c4d5e67b",
+      "fromNode": "c3d4e5f678901a2b",
+      "fromSide": "bottom",
+      "toNode": "1678901a2b3c4d5f",
+      "toSide": "top",
+      "label": "POST /compose"
+    },
+    {
+      "id": "8d01a2b3c4d5e67c",
+      "fromNode": "278901a2b3c4d5e6",
+      "fromSide": "right",
+      "toNode": "c3d4e5f678901a2b",
+      "toSide": "left",
+      "label": "Bearer refresh"
+    }
+  ]
+}

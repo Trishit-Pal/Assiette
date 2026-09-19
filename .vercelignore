@@ -1,0 +1,13 @@
+.cache
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+assiette.db
+ci_assiette.db
+frontend/node_modules
+frontend/dist
+.env
+.venv
+venv
+*.egg-info

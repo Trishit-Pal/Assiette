@@ -1,0 +1,3 @@
+[tool.ruff.lint.per-file-ignores]
+"backend/db/seed.py" = ["E402"]
+"backend/refresh/worker.py" = ["E402"]

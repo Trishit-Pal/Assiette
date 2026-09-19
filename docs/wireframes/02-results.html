@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wireframe 02 — Results / itinerary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="wire.css" />
+</head>
+<body>
+  <p class="crumb"><a href="index.html">Wireframes</a> · 02 of 03 · Results</p>
+  <div class="phone">
+    <div class="notch"></div>
+    <header class="top">
+      <span class="back">← edit query</span>
+      <span class="brand">Assiette</span>
+    </header>
+    <p class="hand">Plan for the 13e · dinner after 18:00 · ≤ €3</p>
+    <div class="map">
+      <div class="pin p1">1</div>
+      <div class="pin p2">2</div>
+      <div class="pin p3">3</div>
+      <span class="maplabel">Paris 13 · pins = retrieved only</span>
+    </div>
+    <article class="card first">
+      <div class="rank">1</div>
+      <div>
+        <h2>Linkee · ESS’Pace</h2>
+        <p>Free basket · Mon 19:30–21:00 · 75013</p>
+        <p class="why">Fits budget (€0) and tonight’s window. Student card + bag. Register on Linkee first.</p>
+        <p class="stamp">source: distributions.json · verified 2026-09-03</p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="rank">2</div>
+      <div>
+        <h2>Cop1 · quai d’Austerlitz</h2>
+        <p>Free basket · Sat 12:30–14:30 · 75013</p>
+        <p class="why">Same arrondissement, not tonight. Shown so the student can plan the week.</p>
+        <p class="stamp">source: Maison étudiante / Cop1</p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="rank">3</div>
+      <div>
+        <h2>RU Halle aux Farines</h2>
+        <p>CROUS · social tariff €3.30 · 75013</p>
+        <p class="why">Nearby, but typical service is lunch — evening likely closed. Honest miss.</p>
+        <p class="stamp">CROUStillant · menu cached 11:00 UTC</p>
+      </div>
+    </article>
+  </div>
+  <aside>
+    <h1 class="hand">Screen 2 — Results</h1>
+    <ul>
+      <li>Ranked itinerary, not a chatbot wall of text.</li>
+      <li>Map only shows retrieved coordinates.</li>
+      <li>Timestamps on every card.</li>
+      <li>Closed / wrong-day options stay visible with a reason — trust over false hope.</li>
+    </ul>
+  </aside>
+</body>
+</html>

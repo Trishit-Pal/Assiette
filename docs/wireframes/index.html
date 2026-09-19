@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Assiette wireframes — index</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --ink: #1c1914; --paper: #f3efe4; --rule: #d9d0bc; --accent: #c45c26; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "IBM Plex Sans", sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 2.5rem 1.5rem 1rem; max-width: 960px; margin: 0 auto; }
+    h1 { font-family: Caveat, cursive; font-size: 3rem; margin: 0; }
+    p { max-width: 62ch; line-height: 1.5; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; max-width: 960px; margin: 0 auto 3rem; padding: 0 1.5rem; }
+    a.card { display: block; border: 2px solid var(--ink); border-radius: 6px 18px 8px 14px; padding: 1.25rem; text-decoration: none; color: inherit; background: #fffdf7; box-shadow: 4px 4px 0 var(--ink); }
+    a.card:hover { transform: rotate(-0.4deg); }
+    .n { font-family: Caveat, cursive; font-size: 2rem; color: var(--accent); }
+    h2 { margin: 0.2rem 0 0.4rem; font-size: 1.05rem; }
+    .note { font-size: 0.9rem; color: #4a453c; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Assiette — three v1 screens</h1>
+    <p>Course wireframes for Track 3. Sketch-faithful HTML (open in a browser; print to PDF if needed). Not the production UI — that lives in the Streamlit prototype.</p>
+  </header>
+  <div class="grid">
+    <a class="card" href="01-home.html">
+      <div class="n">01</div>
+      <h2>Home / query</h2>
+      <div class="note">Natural-language box, example chips, optional filters. Interaction A starts here.</div>
+    </a>
+    <a class="card" href="02-results.html">
+      <div class="n">02</div>
+      <h2>Results / itinerary</h2>
+      <div class="note">Ranked 2–3 stops, map pins, source timestamps. Interaction A output.</div>
+    </a>
+    <a class="card" href="03-detail.html">
+      <div class="n">03</div>
+      <h2>Option detail</h2>
+      <div class="note">Eligibility, menu snippet, French phrases. Interaction B.</div>
+    </a>
+  </div>
+</body>
+</html>
