@@ -70,7 +70,6 @@ def _apply_cache_headers(request: Request, response: Response, etag: str, last_m
 def retrieve(
     request: Request,
     response: Response,
-    q: str = Query(..., min_length=1, max_length=500),
     arrondissement: int | None = Query(default=None, ge=1, le=20),
     budget_eur: float | None = Query(default=None, ge=0, le=100),
     meal: str | None = Query(default=None),
@@ -82,7 +81,6 @@ def retrieve(
     db: Session = Depends(get_db),
 ) -> RetrieveResponse | Response:
     req = QueryRequest(
-        query=q,
         arrondissement=arrondissement,
         budget_eur=budget_eur,
         meal=meal,  # type: ignore[arg-type]

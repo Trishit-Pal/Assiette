@@ -24,15 +24,8 @@ let freshness: FreshnessHandle | null = null;
 let mapApi: MapApi | null = null;
 let mapGen = 0;
 
-function syntheticQuery(state: ComposerState): string {
-  const area = state.arrondissement ? String(state.arrondissement) : "paris";
-  const kind = state.category === "any" ? "food" : state.category;
-  return `${state.meal} ${area} ${kind}`;
-}
-
 function payloadFrom(state: ComposerState): QueryRequest {
   const payload: QueryRequest = {
-    query: state.queryText.trim() || syntheticQuery(state),
     meal: state.meal,
     diet: state.diet,
     category: state.category,
@@ -284,7 +277,6 @@ export function homePage(_onNeedRender: () => void): HTMLElement {
         view = { kind: "data", data: partial };
       } else {
         const composed = await postCompose({
-          query: payload.query,
           intent: retrieved.data.intent,
           place_ids: retrieved.data.places.map((p) => p.id),
           data_version: retrieved.data.data_version,

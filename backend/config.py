@@ -64,6 +64,21 @@ class Settings(BaseSettings):
 
         return os.environ.get("VERCEL_ENV", "").lower() == "production"
 
+    @model_validator(mode="before")
+    @classmethod
+    def _blank_env_as_unset(cls, data: object) -> object:
+        """Vercel secrets set to \"\" break int/bool fields; treat blanks as missing."""
+        if not isinstance(data, dict):
+            return data
+        blank = sorted(str(k) for k, v in data.items() if v == "")
+        if blank:
+            # #region agent log
+            from backend.debuglog import dbg
+
+            dbg("backend/config.py:blank_env", "blank_env_keys", {"keys": blank}, "F")
+            # #endregion
+        return {k: v for k, v in data.items() if v != ""}
+
     @model_validator(mode="after")
     def _normalise_and_guard_production(self) -> Settings:
         import os

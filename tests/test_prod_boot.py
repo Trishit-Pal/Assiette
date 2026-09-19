@@ -33,3 +33,15 @@ def test_storage_uri_falls_back_when_redis_import_fails(monkeypatch):
     monkeypatch.setattr(builtins, "__import__", fake_import)
     assert _storage_uri() == "memory://"
     get_settings.cache_clear()
+
+
+def test_blank_int_env_vars_use_defaults(monkeypatch):
+    monkeypatch.setenv("RATE_LIMIT_PER_MINUTE", "")
+    monkeypatch.setenv("TRUSTED_PROXY_COUNT", "")
+    monkeypatch.setenv("SMTP_PORT", "")
+    get_settings.cache_clear()
+    settings = get_settings()
+    assert settings.rate_limit_per_minute == 30
+    assert settings.trusted_proxy_count == 1
+    assert settings.smtp_port == 587
+    get_settings.cache_clear()

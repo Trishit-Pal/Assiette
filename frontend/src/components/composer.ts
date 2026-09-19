@@ -20,7 +20,6 @@ const CATEGORIES: { value: Category; label: CopyKey }[] = [
 
 type Preset = {
   label: CopyKey;
-  queryText: string;
   arrondissement: number | null;
   meal: Meal;
   budget: number | null;
@@ -31,14 +30,12 @@ type Preset = {
 const PRESETS: Preset[] = [
   {
     label: "preset13dinner",
-    queryText: "I live in the 13th, €3 budget, dinner after 18:00",
     arrondissement: 13,
     meal: "dinner",
     budget: 3.3,
   },
   {
     label: "presetVeg5",
-    queryText: "Je suis végétarien, 5e arrondissement, déjeuner à midi, budget 3,30€",
     arrondissement: 5,
     meal: "lunch",
     budget: 3.3,
@@ -46,7 +43,6 @@ const PRESETS: Preset[] = [
   },
   {
     label: "presetFree",
-    queryText: "Where can I get a free food basket this Thursday evening near Bastille?",
     arrondissement: null,
     meal: "dinner",
     budget: 0,
@@ -161,19 +157,6 @@ export function composer(state: ComposerState, onSubmit: () => void, busy: boole
   });
   syncBursary();
 
-  const queryBox = el("textarea", {
-    id: "query-text",
-    name: "query",
-    rows: "3",
-    maxlength: "400",
-    placeholder: t("queryPlaceholder"),
-    "aria-label": t("askLabel"),
-  }) as HTMLTextAreaElement;
-  queryBox.value = state.queryText;
-  queryBox.addEventListener("input", () => {
-    state.queryText = queryBox.value;
-  });
-
   const submit = el("button", { class: "btn btn-primary", type: "submit", disabled: busy }, t("find"));
 
   const pressMatching = (row: HTMLElement, test: (btn: HTMLButtonElement) => boolean): void => {
@@ -183,8 +166,6 @@ export function composer(state: ComposerState, onSubmit: () => void, busy: boole
   };
 
   const applyPreset = (preset: Preset): void => {
-    state.queryText = preset.queryText;
-    queryBox.value = preset.queryText;
     state.arrondissement = preset.arrondissement;
     state.meal = preset.meal;
     state.budget = preset.budget;
@@ -217,12 +198,6 @@ export function composer(state: ComposerState, onSubmit: () => void, busy: boole
   const form = el(
     "form",
     { class: "composer" },
-    el(
-      "fieldset",
-      { class: "composer-set" },
-      el("legend", {}, t("askLabel")),
-      el("div", { class: "field" }, queryBox),
-    ),
     fieldset(t("arr"), arrChips),
     fieldset(t("kindOfPlace"), catRow),
     fieldset(t("meal"), mealRow),

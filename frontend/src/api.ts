@@ -54,7 +54,6 @@ export async function getRetrieve(
   opts?: { refresh?: boolean },
 ): Promise<RetrieveResult> {
   const params = new URLSearchParams();
-  params.set("q", payload.query);
   if (payload.arrondissement) params.set("arrondissement", String(payload.arrondissement));
   if (payload.budget_eur !== undefined && payload.budget_eur !== null) params.set("budget_eur", String(payload.budget_eur));
   if (payload.meal) params.set("meal", payload.meal);
@@ -73,7 +72,6 @@ export async function getRetrieve(
 }
 
 export function postCompose(payload: {
-  query: string;
   intent: Record<string, unknown>;
   place_ids: string[];
   data_version?: string;

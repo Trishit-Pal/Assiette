@@ -86,7 +86,6 @@ def compose_itinerary(db: Session, req: ComposeRequest) -> ComposeResponse:
     diet_raw = req.intent.get("diet") or "any"
     cat_raw = req.intent.get("category") or "any"
     query_req = QueryRequest(
-        query=req.query or str(req.intent.get("query") or "meal"),
         arrondissement=req.intent.get("arrondissement"),
         budget_eur=req.intent.get("budget_eur"),
         meal=meal_raw if meal_raw in {"breakfast", "lunch", "dinner", "any"} else None,
@@ -101,9 +100,9 @@ def compose_itinerary(db: Session, req: ComposeRequest) -> ComposeResponse:
     chosen = [allowed[i] for i in req.place_ids if i in allowed]
     intent = payload.get("intent")
     if not hasattr(intent, "query"):
-        intent = intent_from_payload(req.intent or retrieved.intent, query_req.query)
+        intent = intent_from_payload(req.intent or retrieved.intent)
     knowledge = (payload.get("meta") or {}).get("knowledge") or []
-    itinerary = generate_itinerary(intent, chosen, knowledge, GroqLLM())
+    itinerary = generate_itinerary(intent, chosen, knowledge, GroqLLM(), use_llm=False)
     version = retrieved.data_version
     version_drift = bool(req.data_version and req.data_version != version)
     meta = dict(retrieved.meta)
@@ -126,16 +125,16 @@ def run_query(db: Session, req: QueryRequest) -> QueryResponse:
     places = _as_places(payload)
     intent = payload.get("intent")
     if not hasattr(intent, "query"):
-        intent = intent_from_payload(retrieved.intent, req.query)
+        intent = intent_from_payload(retrieved.intent)
     knowledge = (payload.get("meta") or {}).get("knowledge") or []
-    itinerary = generate_itinerary(intent, places, knowledge, GroqLLM())
+    itinerary = generate_itinerary(intent, places, knowledge, GroqLLM(), use_llm=False)
     latency_ms = int((time.perf_counter() - start) * 1000)
 
     try:
         from backend.db.session import get_session_factory
 
         intent_payload = intent.__dict__
-        query_text = req.query
+        query_text = getattr(intent, "query", "") or ""
         result_count = len(itinerary.get("stops") or [])
         engine = itinerary.get("engine", "unknown")
 
