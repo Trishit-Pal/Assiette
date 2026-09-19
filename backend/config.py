@@ -65,13 +65,19 @@ class Settings(BaseSettings):
         return os.environ.get("VERCEL_ENV", "").lower() == "production"
 
     @model_validator(mode="after")
-    def _reject_default_secret_in_production(self) -> Settings:
+    def _normalise_and_guard_production(self) -> Settings:
         import os
 
+        self.database_url = (self.database_url or "").strip()
+        self.redis_url = (self.redis_url or "").strip()
+        self.upstash_redis_rest_url = (self.upstash_redis_rest_url or "").strip()
+        self.upstash_redis_rest_token = (self.upstash_redis_rest_token or "").strip()
+        self.secret_key = (self.secret_key or "").strip()
         hosted_prod = os.environ.get("VERCEL_ENV", "").lower() == "production"
-        if self.env.lower() == "production" or hosted_prod:
-            if self.secret_key == _DEFAULT_SECRET or len(self.secret_key) < 32:
-                raise ValueError("SECRET_KEY must be a unique value of at least 32 characters in production")
+        if (self.env.lower() == "production" or hosted_prod) and (
+            self.secret_key == _DEFAULT_SECRET or len(self.secret_key) < 32
+        ):
+            raise ValueError("SECRET_KEY must be a unique value of at least 32 characters in production")
         return self
 
 

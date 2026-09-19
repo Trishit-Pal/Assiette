@@ -180,3 +180,17 @@ def test_retrieve_refresh_skips_not_modified_and_stays_grounded():
     for place in refreshed.json().get("places") or []:
         assert place["id"]
         assert place["source"] in {"crous", "distribution"}
+
+
+def test_retrieve_returns_503_when_database_is_down(monkeypatch):
+    seed_distributions()
+    from sqlalchemy.exc import OperationalError
+
+    def boom(*_args, **_kwargs):
+        raise OperationalError("SELECT 1", {}, Exception("down"))
+
+    monkeypatch.setattr("backend.routers.query.current_data_version", boom)
+    client = TestClient(app)
+    resp = client.get("/retrieve", params={"q": "lunch 5th", "use_network": False})
+    assert resp.status_code == 503
+    assert resp.json()["detail"] == "Database unavailable"

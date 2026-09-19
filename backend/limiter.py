@@ -8,14 +8,39 @@ from slowapi import Limiter
 
 from assiette.cache import KEY_PREFIX, l2_incr
 from backend.config import get_settings
+from backend.observability import get_logger
 from backend.security import client_ip
 
+logger = get_logger("limiter")
+
+
+def _storage_uri() -> str:
+    uri = (get_settings().redis_url or "").strip()
+    if not uri:
+        return "memory://"
+    try:
+        if uri.startswith(("redis://", "rediss://")):
+            import redis  # noqa: F401
+        return uri
+    except ImportError as exc:
+        logger.warning("redis_limiter_unavailable", error=str(exc))
+        return "memory://"
+
+
 _settings = get_settings()
-limiter = Limiter(
-    key_func=client_ip,
-    default_limits=[f"{_settings.rate_limit_per_minute}/minute"],
-    storage_uri=_settings.redis_url or "memory://",
-)
+try:
+    limiter = Limiter(
+        key_func=client_ip,
+        default_limits=[f"{_settings.rate_limit_per_minute}/minute"],
+        storage_uri=_storage_uri(),
+    )
+except (ImportError, OSError, ValueError) as exc:
+    logger.warning("redis_limiter_init_failed", error=str(exc))
+    limiter = Limiter(
+        key_func=client_ip,
+        default_limits=[f"{_settings.rate_limit_per_minute}/minute"],
+        storage_uri="memory://",
+    )
 
 _EMAIL_HITS: dict[str, list[float]] = {}
 _EMAIL_LIMIT = 5

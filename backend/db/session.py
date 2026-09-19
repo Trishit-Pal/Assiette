@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Generator
 from functools import lru_cache
-from urllib.parse import urlparse, urlunparse
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
@@ -17,6 +17,20 @@ from backend.models.orm import Base
 
 def _is_postgres(url: str) -> bool:
     return url.startswith("postgres")
+
+
+def _normalise_database_url(url: str) -> str:
+    url = (url or "").strip()
+    if not _is_postgres(url):
+        return url
+    if url.startswith("postgres://"):
+        url = "postgresql://" + url[len("postgres://") :]
+    scheme, sep, rest = url.partition("://")
+    if sep and scheme in {"postgresql", "postgres"}:
+        url = f"postgresql+psycopg2://{rest}"
+    parsed = urlparse(url)
+    query = [(k, v) for k, v in parse_qsl(parsed.query, keep_blank_values=True) if k != "channel_binding"]
+    return urlunparse(parsed._replace(query=urlencode(query)))
 
 
 def _ensure_neon_pooler(url: str) -> str:
@@ -36,7 +50,7 @@ def _ensure_neon_pooler(url: str) -> str:
 @lru_cache
 def get_engine() -> Engine:
     settings = get_settings()
-    url = settings.database_url
+    url = _normalise_database_url(settings.database_url)
     if _is_postgres(url):
         url = _ensure_neon_pooler(url)
         connect_args: dict[str, object] = {"connect_timeout": 5}

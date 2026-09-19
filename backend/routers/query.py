@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 from email.utils import format_datetime
-import json
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from backend.db.session import get_db
+from backend.limiter import limiter
 from backend.models.orm import Venue
 from backend.models.schemas import (
     ComposeRequest,
@@ -19,12 +21,21 @@ from backend.models.schemas import (
     RetrieveResponse,
     VenueOut,
 )
-from backend.limiter import limiter
+from backend.observability import get_logger
 from backend.repo import VenueRepository, freshness_status, venue_to_dict
-from backend.services.query_service import compose_itinerary, retrieve_response, run_query
-from backend.services.retrieval_service import current_data_version, intent_from_request, intent_hash
+from backend.services.query_service import (
+    compose_itinerary,
+    retrieve_response,
+    run_query,
+)
+from backend.services.retrieval_service import (
+    current_data_version,
+    intent_from_request,
+    intent_hash,
+)
 
 router = APIRouter()
+logger = get_logger("query")
 
 
 def _http_date(value: datetime | None) -> str | None:
@@ -81,19 +92,23 @@ def retrieve(
         use_network=use_network,
         refresh=refresh,
     )
-    hashed = intent_hash(intent_from_request(req, parse_query=False))
-    version = current_data_version(db)
-    etag = f'W/"{version}:{hashed}"'
-    last = VenueRepository(db).last_refresh()
-    if refresh:
-        response.headers["ETag"] = etag
-        response.headers["Cache-Control"] = "no-store"
-    else:
-        not_modified = _apply_cache_headers(request, response, etag, last.finished_at if last else None)
-        if not_modified is not None:
-            return not_modified
-    body, _payload = retrieve_response(db, req, parse_query=False)
-    return body
+    try:
+        hashed = intent_hash(intent_from_request(req, parse_query=False))
+        version = current_data_version(db)
+        etag = f'W/"{version}:{hashed}"'
+        last = VenueRepository(db).last_refresh()
+        if refresh:
+            response.headers["ETag"] = etag
+            response.headers["Cache-Control"] = "no-store"
+        else:
+            not_modified = _apply_cache_headers(request, response, etag, last.finished_at if last else None)
+            if not_modified is not None:
+                return not_modified
+        body, _payload = retrieve_response(db, req, parse_query=False)
+        return body
+    except SQLAlchemyError as exc:
+        logger.warning("retrieve_db_failed", error=str(exc))
+        raise HTTPException(status_code=503, detail="Database unavailable") from exc
 
 
 @router.post("/compose", response_model=ComposeResponse)
