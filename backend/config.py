@@ -83,4 +83,45 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    import os
+
+    try:
+        settings = Settings()
+    except Exception as exc:
+        # #region agent log
+        from backend.debuglog import dbg
+
+        dbg(
+            "backend/config.py:get_settings",
+            "settings_failed",
+            {
+                "error_type": type(exc).__name__,
+                "error": str(exc)[:200],
+                "vercel_env": os.environ.get("VERCEL_ENV", ""),
+                "secret_len": len(os.environ.get("SECRET_KEY", "")),
+                "db_set": bool(os.environ.get("DATABASE_URL", "").strip()),
+                "redis_set": bool(os.environ.get("REDIS_URL", "").strip()),
+            },
+            "A",
+        )
+        # #endregion
+        raise
+    scheme = (settings.database_url or "").split("://", 1)[0]
+    # #region agent log
+    from backend.debuglog import dbg
+
+    dbg(
+        "backend/config.py:get_settings",
+        "settings_loaded",
+        {
+            "env": settings.env,
+            "vercel_env": os.environ.get("VERCEL_ENV", ""),
+            "secret_len": len(settings.secret_key or ""),
+            "secret_is_default": settings.secret_key == _DEFAULT_SECRET,
+            "db_scheme": scheme,
+            "redis_set": bool(settings.redis_url),
+        },
+        "A",
+    )
+    # #endregion
+    return settings

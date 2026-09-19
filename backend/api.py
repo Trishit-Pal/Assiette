@@ -108,10 +108,25 @@ def health(db: Session = Depends(get_db)) -> HealthResponse:
         last = repo.last_refresh()
         count = repo.count_venues()
         db_status = "ok"
-    except Exception:
+        # #region agent log
+        from backend.debuglog import dbg
+
+        dbg("backend/api.py:health", "health_ok", {"venue_count": count, "db_status": db_status}, "D")
+        # #endregion
+    except Exception as exc:
         last = None
         count = 0
         db_status = "error"
+        # #region agent log
+        from backend.debuglog import dbg
+
+        dbg(
+            "backend/api.py:health",
+            "health_db_error",
+            {"error_type": type(exc).__name__, "error": str(exc)[:200]},
+            "D",
+        )
+        # #endregion
     return HealthResponse(
         status="ok" if db_status == "ok" else "degraded",
         database=db_status,
