@@ -5,7 +5,6 @@ export type Freshness = "fresh" | "stale" | "refused";
 export type SourceMode = "live" | "cache" | "stale" | "snapshot";
 
 export type QueryRequest = {
-  query: string;
   arrondissement?: number | null;
   budget_eur?: number | null;
   meal?: Meal;
@@ -148,7 +147,6 @@ export type RefreshRunsOut = {
 };
 
 export type ComposerState = {
-  queryText: string;
   arrondissement: number | null;
   budget: number | null;
   meal: Meal;

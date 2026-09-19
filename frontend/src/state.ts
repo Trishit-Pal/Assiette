@@ -29,10 +29,7 @@ export function mealFromClock(now = new Date()): Meal {
   return "dinner";
 }
 
-export const DEMO_QUERY = "I live in the 13th, €3 budget, dinner after 18:00";
-
 export const defaultComposer = (): ComposerState => ({
-  queryText: DEMO_QUERY,
   arrondissement: 13,
   budget: 3.3,
   meal: "dinner",

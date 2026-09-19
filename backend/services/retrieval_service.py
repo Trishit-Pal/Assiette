@@ -11,8 +11,8 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from assiette.cache import DATAV_KEY, LIST_HARD_TTL, LIST_KEY, RETR_HARD_TTL, cache_get, cache_set, retr_key
-from assiette.llm import GroqLLM, parse_intent_with_llm
-from assiette.retrieval import DISPLAY_LIMIT, Intent, MatchRecord, RankedPlace, heuristic_intent, rank_places
+from assiette.llm import GroqLLM
+from assiette.retrieval import DISPLAY_LIMIT, Intent, MatchRecord, RankedPlace, rank_places
 from backend.models.schemas import EmptyReasonOut, MatchRecordOut, QueryRequest, RankedPlaceOut, SourceMeta
 from backend.repo import VenueRepository, freshness_status
 
@@ -45,40 +45,34 @@ def intent_hash(intent: Intent, weekday: str | None = None) -> str:
     return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()[:16]
 
 
-def intent_from_request(req: QueryRequest, llm: GroqLLM | None = None, *, parse_query: bool = True) -> Intent:
-    llm = llm or GroqLLM()
-    overrides: dict[str, Any] = {}
-    if req.arrondissement is not None:
-        overrides["arrondissement"] = req.arrondissement
-    if req.budget_eur is not None:
-        overrides["budget_eur"] = req.budget_eur
+def _chip_label(req: QueryRequest) -> str:
+    bits: list[str] = []
     if req.meal and req.meal != "any":
-        overrides["meal"] = req.meal
+        bits.append(req.meal)
+    if req.arrondissement is not None:
+        bits.append(f"{req.arrondissement}e")
+    if req.budget_eur is not None:
+        bits.append(f"€{req.budget_eur:g}")
     if req.diet != "any":
-        overrides["diet"] = req.diet
-    if req.bursary:
-        overrides["bursary"] = True
+        bits.append(req.diet)
     if req.category != "any":
-        overrides["category"] = req.category
-    if parse_query and llm.available:
-        intent = parse_intent_with_llm(req.query, llm, overrides)
-    else:
-        intent = heuristic_intent(req.query, overrides)
-    if not parse_query:
-        # Only stamp chips the client actually sent. Default meal/arr would
-        # wipe lunch/5th parsed from q on /retrieve?q=...
-        if req.arrondissement is not None:
-            intent.arrondissement = req.arrondissement
-        if req.budget_eur is not None:
-            intent.budget_eur = req.budget_eur
-        if req.meal is not None:
-            intent.meal = req.meal
-        if req.diet != "any":
-            intent.diet = req.diet
-        if req.bursary:
-            intent.bursary = True
-        intent.category = req.category
-    return intent
+        bits.append(req.category)
+    return " · ".join(bits) or "filters"
+
+
+def intent_from_request(req: QueryRequest, llm: GroqLLM | None = None, *, parse_query: bool = False) -> Intent:
+    del llm, parse_query
+    meal = req.meal or "any"
+    return Intent(
+        query=_chip_label(req),
+        arrondissement=req.arrondissement,
+        budget_eur=req.budget_eur,
+        time_hhmm=None,
+        meal=meal,
+        diet=req.diet,
+        bursary=req.bursary,
+        category=req.category,
+    )
 
 
 def intent_from_payload(payload: dict[str, Any], query: str = "") -> Intent:

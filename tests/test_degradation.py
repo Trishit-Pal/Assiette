@@ -102,7 +102,7 @@ def test_invented_stop_is_dropped():
 def test_query_never_blank_when_db_seeded():
     seed_distributions()
     client = TestClient(app)
-    resp = client.post("/query", json={"query": "dinner 13th", "use_network": False})
+    resp = client.post("/query", json={"arrondissement": 13, "meal": "dinner", "use_network": False})
     assert resp.status_code == 200
     data = resp.json()
     assert data["summary"]

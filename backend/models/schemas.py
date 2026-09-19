@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 
 
 class ScheduleSlot(BaseModel):
@@ -39,7 +39,6 @@ class VenueOut(BaseModel):
 
 
 class QueryRequest(BaseModel):
-    query: str = Field(..., min_length=1, max_length=500)
     arrondissement: int | None = Field(default=None, ge=1, le=20)
     budget_eur: float | None = Field(default=None, ge=0, le=100)
     meal: Literal["breakfast", "lunch", "dinner", "any"] | None = None
@@ -48,11 +47,6 @@ class QueryRequest(BaseModel):
     category: Literal["any", "crous", "distribution"] = "any"
     use_network: bool = True
     refresh: bool = False
-
-    @field_validator("query")
-    @classmethod
-    def strip_query(cls, v: str) -> str:
-        return v.strip()
 
 
 class ItineraryStop(BaseModel):
@@ -136,7 +130,6 @@ class RetrieveResponse(BaseModel):
 
 
 class ComposeRequest(BaseModel):
-    query: str = Field(default="", max_length=500)
     intent: dict[str, Any] = Field(default_factory=dict)
     place_ids: list[str] = Field(default_factory=list)
     data_version: str | None = None

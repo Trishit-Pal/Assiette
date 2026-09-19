@@ -14,7 +14,7 @@ def test_health_and_query_grounding():
 
     resp = client.post(
         "/query",
-        json={"query": "I live in the 13th, euro 3 budget, dinner after 18:00", "use_network": False},
+        json={"arrondissement": 13, "budget_eur": 3, "meal": "dinner", "use_network": False},
     )
     assert resp.status_code == 200
     data = resp.json()
@@ -29,14 +29,17 @@ def test_health_and_query_grounding():
 def test_retrieve_is_cacheable():
     seed_distributions()
     client = TestClient(app)
-    resp = client.get("/retrieve", params={"q": "lunch in the 5th under 4 euros", "use_network": False})
+    resp = client.get(
+        "/retrieve",
+        params={"arrondissement": 5, "budget_eur": 4, "meal": "lunch", "use_network": False},
+    )
     assert resp.status_code == 200
     assert len(resp.json()["places"]) <= 10
     assert "ETag" in resp.headers
     etag = resp.headers["ETag"]
     again = client.get(
         "/retrieve",
-        params={"q": "lunch in the 5th under 4 euros", "use_network": False},
+        params={"arrondissement": 5, "budget_eur": 4, "meal": "lunch", "use_network": False},
         headers={"If-None-Match": etag},
     )
     assert again.status_code in {200, 304}
@@ -45,14 +48,13 @@ def test_retrieve_is_cacheable():
 def test_compose_drops_forged_place_id():
     seed_distributions()
     client = TestClient(app)
-    retrieved = client.get("/retrieve", params={"q": "lunch 5th", "use_network": False})
+    retrieved = client.get("/retrieve", params={"arrondissement": 5, "meal": "lunch", "use_network": False})
     assert retrieved.status_code == 200
     body = retrieved.json()
     real_ids = [p["id"] for p in body.get("places") or []]
     resp = client.post(
         "/compose",
         json={
-            "query": "lunch 5th",
             "intent": body.get("intent") or {},
             "place_ids": ["invented-bistro-999", *real_ids[:1]],
             "data_version": body.get("data_version"),
@@ -92,7 +94,7 @@ def test_retrieve_endpoint_returns_filters_too_strict_reason(monkeypatch):
     client = TestClient(app)
     resp = client.get(
         "/retrieve",
-        params={"q": "dinner", "arrondissement": 1, "budget_eur": 0, "use_network": False},
+        params={"arrondissement": 1, "budget_eur": 0, "meal": "dinner", "use_network": False},
     )
     assert resp.status_code == 200
     body = resp.json()
@@ -115,7 +117,7 @@ def test_retrieve_endpoint_returns_no_data_reason_when_sources_empty(monkeypatch
 
     monkeypatch.setattr("backend.services.retrieval_service.rank_places", empty_rank)
     client = TestClient(app)
-    resp = client.get("/retrieve", params={"q": "dinner in paris", "use_network": False})
+    resp = client.get("/retrieve", params={"meal": "dinner", "use_network": False})
     assert resp.status_code == 200
     body = resp.json()
     assert body["places"] == []
@@ -125,7 +127,7 @@ def test_retrieve_endpoint_returns_no_data_reason_when_sources_empty(monkeypatch
 def test_meal_alone_never_triggers_empty_reason():
     seed_distributions()
     client = TestClient(app)
-    resp = client.get("/retrieve", params={"q": "breakfast somewhere in paris", "use_network": False})
+    resp = client.get("/retrieve", params={"meal": "breakfast", "use_network": False})
     assert resp.status_code == 200
     body = resp.json()
     assert body["places"]
@@ -137,7 +139,7 @@ def test_retrieve_category_distribution_excludes_crous():
     client = TestClient(app)
     resp = client.get(
         "/retrieve",
-        params={"q": "dinner paris", "category": "distribution", "meal": "dinner", "use_network": False},
+        params={"category": "distribution", "meal": "dinner", "use_network": False},
     )
     assert resp.status_code == 200
     body = resp.json()
@@ -150,7 +152,7 @@ def test_retrieve_category_crous_excludes_distribution():
     client = TestClient(app)
     resp = client.get(
         "/retrieve",
-        params={"q": "dinner paris", "category": "crous", "meal": "dinner", "use_network": False},
+        params={"category": "crous", "meal": "dinner", "use_network": False},
     )
     assert resp.status_code == 200
     body = resp.json()
@@ -161,18 +163,18 @@ def test_retrieve_category_crous_excludes_distribution():
 def test_retrieve_refresh_skips_not_modified_and_stays_grounded():
     seed_distributions()
     client = TestClient(app)
-    first = client.get("/retrieve", params={"q": "dinner paris", "use_network": False})
+    first = client.get("/retrieve", params={"meal": "dinner", "use_network": False})
     assert first.status_code == 200
     etag = first.headers["ETag"]
     cached = client.get(
         "/retrieve",
-        params={"q": "dinner paris", "use_network": False},
+        params={"meal": "dinner", "use_network": False},
         headers={"If-None-Match": etag},
     )
     assert cached.status_code in {200, 304}
     refreshed = client.get(
         "/retrieve",
-        params={"q": "dinner paris", "use_network": False, "refresh": "true"},
+        params={"meal": "dinner", "use_network": False, "refresh": "true"},
         headers={"If-None-Match": etag},
     )
     assert refreshed.status_code == 200
@@ -191,6 +193,35 @@ def test_retrieve_returns_503_when_database_is_down(monkeypatch):
 
     monkeypatch.setattr("backend.routers.query.current_data_version", boom)
     client = TestClient(app)
-    resp = client.get("/retrieve", params={"q": "lunch 5th", "use_network": False})
+    resp = client.get("/retrieve", params={"arrondissement": 5, "meal": "lunch", "use_network": False})
     assert resp.status_code == 503
     assert resp.json()["detail"] == "Database unavailable"
+
+
+def test_retrieve_rejects_invalid_arrondissement():
+    client = TestClient(app)
+    resp = client.get("/retrieve", params={"arrondissement": 21, "use_network": False})
+    assert resp.status_code == 422
+
+
+def test_query_ignores_free_text_and_uses_template():
+    seed_distributions()
+    client = TestClient(app)
+    resp = client.post(
+        "/query",
+        json={
+            "query": "I live in the 1st with a huge budget",
+            "arrondissement": 13,
+            "meal": "dinner",
+            "budget_eur": 3.3,
+            "use_network": False,
+        },
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["engine"] == "template"
+    assert data["intent"]["arrondissement"] == 13
+    assert data["intent"]["meal"] == "dinner"
+    allowed = {p["id"] for p in data.get("places") or []}
+    for stop in data.get("stops") or []:
+        assert stop["id"] in allowed

@@ -2,7 +2,14 @@ from datetime import datetime
 
 from assiette.geo import arrondissement_from_query, arrondissement_tier, postal_code_from_text, proximity_score
 from assiette.llm import generate_itinerary
-from assiette.retrieval import DISPLAY_LIMIT, MIN_EXACT_ARRONDISSEMENT_RESULTS, heuristic_intent, rank_places, search_knowledge
+from assiette.retrieval import (
+    DISPLAY_LIMIT,
+    Intent,
+    MIN_EXACT_ARRONDISSEMENT_RESULTS,
+    heuristic_intent,
+    rank_places,
+    search_knowledge,
+)
 from backend.services.retrieval_service import empty_reason_from_meta
 
 
@@ -102,10 +109,10 @@ def test_rank_places_offline_prefers_13th_and_free_for_tight_budget():
     assert "linkee-esspace" in top_ids or any(p.price_eur == 0 and p.arrondissement == 13 for p in places[:3])
 
 
-def test_grounding_rejects_unknown_ids(monkeypatch):
-    intent = heuristic_intent("dinner in the 13th")
+def test_grounding_rejects_unknown_ids():
+    intent = Intent(query="dinner · 13e", arrondissement=13, meal="dinner")
     places, _ = rank_places(intent, when=datetime(2026, 9, 7, 18, 0), use_network=False, menu_limit=0)
-    result = generate_itinerary(intent, places, [])
+    result = generate_itinerary(intent, places, [], use_llm=False)
     allowed = {p.id for p in places[:6]}
     for stop in result["stops"]:
         assert stop["id"] in allowed

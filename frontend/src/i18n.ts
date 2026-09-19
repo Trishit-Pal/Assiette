@@ -34,7 +34,7 @@ const copy = {
     askHeading: "What's on the menu?",
     askLead:
       "Type a sentence in English or French, or start from a preset. Chips refine the search. Find fetches live data. Tickets only appear for venues we already retrieved.",
-    askLabel: "Ask in English or French",
+    askLabel: "Choose filters",
     queryPlaceholder: "I live in the 13th, €3 budget, dinner after 18:00",
     arr: "Arrondissement",
     arrFromQuery: "From query",
@@ -187,7 +187,7 @@ const copy = {
     askHeading: "Quoi au menu ?",
     askLead:
       "Écrivez une phrase en anglais ou en français, ou partez d’un exemple. Les pastilles affinent la recherche. Trouver récupère les données en direct. Les tickets ne montrent que des lieux déjà trouvés.",
-    askLabel: "Demandez en anglais ou en français",
+    askLabel: "Choisir des filtres",
     queryPlaceholder: "Je vis dans le 13e, budget 3 €, dîner après 18h",
     arr: "Arrondissement",
     arrFromQuery: "Dans la question",

@@ -253,9 +253,13 @@ def generate_itinerary(
     places: list[RankedPlace],
     knowledge: list[dict[str, str]],
     llm: GroqLLM | None = None,
+    *,
+    use_llm: bool = True,
 ) -> dict[str, Any]:
     allowed_ids = {p.id for p in places[:6]}
     fallback = template_itinerary(intent, places, knowledge)
+    if not use_llm:
+        return fallback
     llm = llm or GroqLLM()
     if not llm.available or not places:
         return fallback
