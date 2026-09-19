@@ -17,27 +17,12 @@ logger = get_logger("limiter")
 def _storage_uri() -> str:
     uri = (get_settings().redis_url or "").strip()
     if not uri:
-        # #region agent log
-        from backend.debuglog import dbg
-
-        dbg("backend/limiter.py:_storage_uri", "using_memory", {}, "B")
-        # #endregion
         return "memory://"
     try:
         if uri.startswith(("redis://", "rediss://")):
             import redis  # noqa: F401
-        # #region agent log
-        from backend.debuglog import dbg
-
-        dbg("backend/limiter.py:_storage_uri", "using_redis", {"scheme": uri.split(":", 1)[0]}, "B")
-        # #endregion
         return uri
     except ImportError as exc:
-        # #region agent log
-        from backend.debuglog import dbg
-
-        dbg("backend/limiter.py:_storage_uri", "redis_import_failed", {"error": str(exc)[:160]}, "B")
-        # #endregion
         logger.warning("redis_limiter_unavailable", error=str(exc))
         return "memory://"
 
