@@ -91,8 +91,9 @@ def retrieve(
         use_network=use_network,
         refresh=refresh,
     )
+    hashed = intent_hash(intent_from_request(req, parse_query=False))
+    etag: str | None = None
     try:
-        hashed = intent_hash(intent_from_request(req, parse_query=False))
         version = current_data_version(db)
         etag = f'W/"{version}:{hashed}"'
         last = VenueRepository(db).last_refresh()
@@ -103,11 +104,10 @@ def retrieve(
             not_modified = _apply_cache_headers(request, response, etag, last.finished_at if last else None)
             if not_modified is not None:
                 return not_modified
-        body, _payload = retrieve_response(db, req, parse_query=False)
-        return body
     except SQLAlchemyError as exc:
         logger.warning("retrieve_db_failed", error=str(exc))
-        raise HTTPException(status_code=503, detail="Database unavailable") from exc
+    body, _payload = retrieve_response(db, req, parse_query=False)
+    return body
 
 
 @router.post("/compose", response_model=ComposeResponse)

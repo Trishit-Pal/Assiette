@@ -8,13 +8,17 @@ from dataclasses import asdict
 from datetime import datetime, timezone
 from typing import Any
 
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from assiette.cache import DATAV_KEY, LIST_HARD_TTL, LIST_KEY, RETR_HARD_TTL, cache_get, cache_set, retr_key
 from assiette.llm import GroqLLM
 from assiette.retrieval import DISPLAY_LIMIT, Intent, MatchRecord, RankedPlace, rank_places
 from backend.models.schemas import EmptyReasonOut, MatchRecordOut, QueryRequest, RankedPlaceOut, SourceMeta
+from backend.observability import get_logger
 from backend.repo import VenueRepository, freshness_status
+
+logger = get_logger("retrieval_service")
 
 COLD_MENU_LIMIT = 3
 WARM_MENU_LIMIT = 6
@@ -191,7 +195,16 @@ def retrieve_places(
 ) -> dict[str, Any]:
     llm = llm or GroqLLM()
     intent = intent_from_request(req, llm, parse_query=parse_query)
-    version = current_data_version(db)
+    db_session: Session | None = db
+    version = "snapshot"
+    last_refresh = None
+    try:
+        version = current_data_version(db)
+        last_refresh = VenueRepository(db).last_refresh()
+    except SQLAlchemyError as exc:
+        logger.warning("retrieve_db_version_failed", error=str(exc))
+        db_session = None
+        version = "snapshot"
     hashed = intent_hash(intent)
     cache_id = retr_key(version, hashed)
     if req.refresh:
@@ -208,19 +221,14 @@ def retrieve_places(
     list_warm = cache_get(LIST_KEY, LIST_HARD_TTL) is not None
     menu_limit = WARM_MENU_LIMIT if list_warm else COLD_MENU_LIMIT
     if req.refresh:
-        from backend.db.seed import seed_distributions
-
-        seed_distributions()
         menu_limit = WARM_MENU_LIMIT
     places, meta = rank_places(
         intent,
         use_network=req.use_network,
         menu_limit=menu_limit,
-        db_session=db,
+        db_session=db_session,
         force_refresh=bool(req.refresh),
     )
-    repo = VenueRepository(db)
-    last_refresh = repo.last_refresh()
     crous_status = str(meta.get("crous_status") or "")
     offline_mode = crous_status.startswith("fallback")
     sources = [
