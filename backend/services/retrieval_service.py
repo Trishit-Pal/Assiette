@@ -196,8 +196,11 @@ def retrieve_places(
     llm = llm or GroqLLM()
     intent = intent_from_request(req, llm, parse_query=parse_query)
     db_session: Session | None = db
+    version = "snapshot"
+    last_refresh = None
     try:
         version = current_data_version(db)
+        last_refresh = VenueRepository(db).last_refresh()
     except SQLAlchemyError as exc:
         logger.warning("retrieve_db_version_failed", error=str(exc))
         db_session = None
@@ -226,12 +229,6 @@ def retrieve_places(
         db_session=db_session,
         force_refresh=bool(req.refresh),
     )
-    last_refresh = None
-    if db_session is not None:
-        try:
-            last_refresh = VenueRepository(db).last_refresh()
-        except SQLAlchemyError as exc:
-            logger.warning("retrieve_db_last_refresh_failed", error=str(exc))
     crous_status = str(meta.get("crous_status") or "")
     offline_mode = crous_status.startswith("fallback")
     sources = [
