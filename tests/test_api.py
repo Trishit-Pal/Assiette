@@ -195,18 +195,34 @@ def test_retrieve_refresh_skips_not_modified_and_stays_grounded():
         assert place["source"] in {"crous", "distribution"}
 
 
-def test_retrieve_returns_503_when_database_is_down(monkeypatch):
-    seed_distributions()
+def test_retrieve_fail_open_when_database_is_down(monkeypatch):
     from sqlalchemy.exc import OperationalError
 
     def boom(*_args, **_kwargs):
         raise OperationalError("SELECT 1", {}, Exception("down"))
 
-    monkeypatch.setattr("backend.routers.query.current_data_version", boom)
+    monkeypatch.setattr("backend.services.retrieval_service.current_data_version", boom)
     client = TestClient(app)
     resp = client.get("/retrieve", params={"arrondissement": 5, "meal": "lunch", "use_network": False})
-    assert resp.status_code == 503
-    assert resp.json()["detail"] == "Database unavailable"
+    assert resp.status_code == 200
+    data = resp.json()
+    places = data.get("places") or []
+    assert places
+    assert places[0]["id"]
+    assert data.get("offline_mode") or data.get("data_version") == "snapshot"
+
+    place_id = places[0]["id"]
+    compose = client.post(
+        "/compose",
+        json={
+            "intent": data.get("intent") or {"meal": "lunch", "arrondissement": 5},
+            "place_ids": [place_id],
+            "data_version": data.get("data_version"),
+            "use_network": False,
+        },
+    )
+    assert compose.status_code == 200
+    assert compose.json().get("engine") == "template"
 
 
 def test_retrieve_rejects_invalid_arrondissement():
