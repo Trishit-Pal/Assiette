@@ -1,4 +1,6 @@
-from datetime import datetime
+import json
+from datetime import datetime, timedelta, timezone
+from unittest.mock import MagicMock, patch
 
 from assiette.geo import arrondissement_from_query, arrondissement_tier, postal_code_from_text, proximity_score
 from assiette.llm import generate_itinerary
@@ -7,6 +9,7 @@ from assiette.retrieval import (
     Intent,
     MIN_EXACT_ARRONDISSEMENT_RESULTS,
     heuristic_intent,
+    load_distributions,
     rank_places,
     search_knowledge,
 )
@@ -271,7 +274,7 @@ def test_rank_places_open_ranks_above_closed_within_same_arrondissement(monkeypa
     assert next(p for p in places if p.id == "closed-dist").match.meal == "closed"
 
 
-def test_rank_places_open_nearby_before_closed_exact(monkeypatch):
+def test_rank_places_exact_closed_before_nearby_open_when_arr_chip_set(monkeypatch):
     monkeypatch.setattr(
         "assiette.retrieval.load_distributions",
         lambda **k: {
@@ -285,9 +288,63 @@ def test_rank_places_open_nearby_before_closed_exact(monkeypatch):
     intent = heuristic_intent("dinner", {"arrondissement": 13, "meal": "dinner"})
     places, _meta = rank_places(intent, client=StubCrous([]), when=MONDAY, use_network=False, menu_limit=0)
     ids = [p.id for p in places]
-    assert ids.index("near-open") < ids.index("here-closed")
+    assert ids.index("here-closed") < ids.index("near-open")
     assert next(p for p in places if p.id == "near-open").match.arrondissement == "nearby"
     assert next(p for p in places if p.id == "here-closed").match.arrondissement == "exact"
+
+
+def test_rank_places_open_before_closed_when_arr_chip_unset(monkeypatch):
+    monkeypatch.setattr(
+        "assiette.retrieval.load_distributions",
+        lambda **k: {
+            "distributions": [
+                _dist("closed-dist", 13, weekday="Tuesday"),
+                _dist("open-dist", 13),
+            ],
+            "last_compiled": "x",
+        },
+    )
+    intent = heuristic_intent("dinner", {"meal": "dinner"})
+    assert intent.arrondissement is None
+    places, _meta = rank_places(intent, client=StubCrous([]), when=MONDAY, use_network=False, menu_limit=0)
+    ids = [p.id for p in places]
+    assert ids.index("open-dist") < ids.index("closed-dist")
+
+
+def test_rank_places_ignores_db_only_distribution_not_in_json():
+    db_only = _dist("db-only-not-in-json-catalog", 13)
+    session = MagicMock()
+    with patch("backend.repo.VenueRepository") as repo_cls:
+        repo_cls.return_value.list_active_distributions.return_value = [db_only]
+        intent = heuristic_intent("dinner", {"arrondissement": 13, "meal": "dinner", "category": "distribution"})
+        places, _meta = rank_places(
+            intent, client=StubCrous([]), when=MONDAY, use_network=False, menu_limit=0, db_session=session
+        )
+    assert all(p.id != "db-only-not-in-json-catalog" for p in places)
+
+
+def test_load_distributions_drops_refused_rows_keeps_fresh(tmp_path, monkeypatch):
+    refused_date = (datetime.now(timezone.utc) - timedelta(days=45)).strftime("%Y-%m-%d")
+    payload = {
+        "last_compiled": "fixture-compiled",
+        "distributions": [
+            {**_dist("stale-row", 13), "last_verified": refused_date},
+            _dist("fresh-row", 13),
+        ],
+    }
+    path = tmp_path / "distributions.json"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    loaded = load_distributions(path=path)
+    ids = {row["id"] for row in loaded["distributions"]}
+    assert "stale-row" not in ids
+    assert "fresh-row" in ids
+    assert loaded["last_compiled"] == "fixture-compiled"
+
+    monkeypatch.setattr("assiette.retrieval.DISTRIBUTIONS_PATH", path)
+    intent = heuristic_intent("dinner", {"arrondissement": 13, "meal": "dinner", "category": "distribution"})
+    places, _meta = rank_places(intent, client=StubCrous([]), when=MONDAY, use_network=False, menu_limit=0)
+    assert all(p.id != "stale-row" for p in places)
+    assert any(p.id == "fresh-row" for p in places)
 
 
 def test_rank_places_diet_match_does_not_outrank_open(monkeypatch):

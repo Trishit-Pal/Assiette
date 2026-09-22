@@ -129,7 +129,7 @@ flowchart TB
 
 **On the student’s path (must stay fast):**
 
-- Retrieve ranks real CROUS restaurants (Paris region `22`) and active distributions from the database.
+- Retrieve ranks real CROUS restaurants (Paris region `22`) and active charity distributions from [`data/distributions.json`](../data/distributions.json).
 - Compose asks Groq for JSON copy, then **drops any stop id that was not retrieved**.
 
 **Off the student’s path (slow work lives here):**
@@ -153,7 +153,7 @@ flowchart TB
 |---|---|
 | **FastAPI + Uvicorn** | One Python API. Fits Vercel’s Python function. |
 | **Vite + vanilla TypeScript** | Tiny UI, no React tax on Hobby. |
-| **Groq** (`openai/gpt-oss-20b`) | Cheap, fast JSON. Two jobs: parse a sentence (on `/query` only) and write ticket copy. |
+| **Groq** (`openai/gpt-oss-20b`) | Optional LLM path in code. Live `/query` and `/compose` call `generate_itinerary(..., use_llm=False)` (template copy only). |
 | **CROUStillant** | Official live Paris CROUS menus. Non-commercial use only. |
 | **SQLAlchemy + Alembic** | Schema changes you can replay (`alembic upgrade head`). |
 | **Neon Postgres** | Serverless database. Use the **pooler** URL so functions do not exhaust connections. |
@@ -192,20 +192,20 @@ You do not need to memorise this. When something breaks, start here.
 [`assiette/retrieval.py`](../assiette/retrieval.py) `rank_places()`:
 
 - CROUS list via [`assiette/crous_client.py`](../assiette/crous_client.py) (live, cache, or fallback JSON).
-- Distributions from the database, else [`data/distributions.json`](../data/distributions.json).
+- Find ranks charity venues only from [`data/distributions.json`](../data/distributions.json). Neon is a replica for seed, `/internal/refresh`, `/venues`, and candidate review. An approved scrape is not a Find ticket until it is in the JSON. Rows whose `last_verified` is past `freshness_refuse_days` are dropped. When an arrondissement chip is set, order is arrondissement tier, then open, then diet, then price. When it is unset, order is open, then diet, then price. If Neon is unreachable, retrieve **fail-opens**: CROUS and the bundled JSON still return tickets.
 - Score: proximity + open-for-slot + budget (diet after menus).
 - Today’s menu only for a short CROUS shortlist.
 - Extra notes from [`data/knowledge.md`](../data/knowledge.md) by keyword overlap, not vectors.
 
-On the SPA, intent is **heuristic** (chips + regex). Groq intent parse runs on `/query`, not on `/retrieve`.
+Intent is **chips-only** (heuristic labels from filters). `/retrieve`, `/query`, and `/compose` do not call Groq for intent parsing.
 
 ### 8.3 Grounding (compose)
 
 [`assiette/llm.py`](../assiette/llm.py) `generate_itinerary()`:
 
-- Groq returns `{summary, stops, caveats}`.
-- Any `stop.id` not in the retrieved id set is **dropped**.
-- If Groq is down, the key is missing, or prose names a venue that was not retrieved, a **template** itinerary is used instead.
+- Production paths pass `use_llm=False`, so copy comes from the **template** engine (no Groq round-trip).
+- Any `stop.id` not in the retrieved id set is **dropped** (Groq path would do the same when enabled).
+- If you turn LLM copy back on and Groq fails, template fallback still applies.
 
 That is why “never invent a venue” is a product promise, not a prompt wish. Tests: `tests/test_retrieval.py`, `tests/test_api.py`.
 

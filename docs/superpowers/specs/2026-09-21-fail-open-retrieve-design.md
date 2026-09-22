@@ -10,6 +10,8 @@ When Postgres/Neon is unreachable, student search must still return grounded ven
 - **`refresh=true`** still forces a network refresh path in ranking but does **not** call `seed_distributions()`.
 - ETag / 304 logic: if DB calls for version or `last_refresh` fail, skip conditional 304 and still run retrieval.
 
+Find ranks charity venues only from data/distributions.json. Neon is a replica for seed, /internal/refresh, /venues, and candidate review. An approved scrape is not a Find ticket until it is in the JSON. Rows whose last_verified is past freshness_refuse_days are dropped. When an arrondissement chip is set, order is arrondissement tier, then open, then diet, then price. When it is unset, order is open, then diet, then price.
+
 ## Out of scope
 
 Clerk, new API keys, IndexedDB, seed-on-deploy, CI/CD or `vercel.json` changes.
