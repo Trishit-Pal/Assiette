@@ -129,7 +129,7 @@ flowchart TB
 
 **On the student’s path (must stay fast):**
 
-- Retrieve ranks real CROUS restaurants (Paris region `22`) and active distributions from the database.
+- Retrieve ranks real CROUS restaurants (Paris region `22`) and active charity distributions from [`data/distributions.json`](../data/distributions.json).
 - Compose asks Groq for JSON copy, then **drops any stop id that was not retrieved**.
 
 **Off the student’s path (slow work lives here):**
@@ -192,7 +192,7 @@ You do not need to memorise this. When something breaks, start here.
 [`assiette/retrieval.py`](../assiette/retrieval.py) `rank_places()`:
 
 - CROUS list via [`assiette/crous_client.py`](../assiette/crous_client.py) (live, cache, or fallback JSON).
-- Distributions from the database, else [`data/distributions.json`](../data/distributions.json). If Neon is unreachable, retrieve **fail-opens**: DB reads are skipped and bundled JSON is used instead of erroring out.
+- Find ranks charity venues only from [`data/distributions.json`](../data/distributions.json). Neon is a replica for seed, `/internal/refresh`, `/venues`, and candidate review. An approved scrape is not a Find ticket until it is in the JSON. Rows whose `last_verified` is past `freshness_refuse_days` are dropped. When an arrondissement chip is set, order is arrondissement tier, then open, then diet, then price. When it is unset, order is open, then diet, then price. If Neon is unreachable, retrieve **fail-opens**: CROUS and the bundled JSON still return tickets.
 - Score: proximity + open-for-slot + budget (diet after menus).
 - Today’s menu only for a short CROUS shortlist.
 - Extra notes from [`data/knowledge.md`](../data/knowledge.md) by keyword overlap, not vectors.
