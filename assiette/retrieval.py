@@ -463,8 +463,7 @@ def rank_places(
             )
         )
 
-    sort_key = lambda p: _place_sort_key(p, intent.arrondissement)
-    candidates.sort(key=sort_key)
+    candidates.sort(key=lambda p: _place_sort_key(p, intent.arrondissement))
 
     slot = meal_to_crous_slot(intent.meal)
     to_fetch = [
@@ -490,8 +489,7 @@ def rank_places(
         with ThreadPoolExecutor(max_workers=min(6, len(to_fetch))) as pool:
             list(pool.map(_fetch_menu, to_fetch))
 
-    sort_key = lambda p: _place_sort_key(p, intent.arrondissement)
-    candidates.sort(key=sort_key)
+    candidates.sort(key=lambda p: _place_sort_key(p, intent.arrondissement))
     if intent.arrondissement is not None:
         exact_n = sum(1 for p in candidates if p.match.arrondissement == "exact")
         if exact_n >= MIN_EXACT_ARRONDISSEMENT_RESULTS:
