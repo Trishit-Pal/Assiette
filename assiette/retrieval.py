@@ -6,7 +6,7 @@ import json
 import re
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import lru_cache
 from typing import Any, Literal
 
@@ -112,18 +112,31 @@ class RankedPlace:
     match: MatchRecord = field(default_factory=MatchRecord)
 
 
-def load_distributions(path=None, db_session=None) -> dict:
-    if db_session is not None:
-        try:
-            from backend.repo import VenueRepository
+def _parse_last_verified_utc(raw: str) -> datetime | None:
+    text = raw.strip()
+    if not text:
+        return None
+    if "T" in text:
+        dt = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    else:
+        dt = datetime.strptime(text[:10], "%Y-%m-%d")
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
 
-            rows = VenueRepository(db_session).list_active_distributions()
-            if rows:
-                return {"distributions": rows, "last_compiled": "database"}
-        except Exception:
-            pass
+
+def load_distributions(path=None, db_session=None) -> dict:
+    del db_session  # kept for callers; catalog is always JSON-backed
     payload = json.loads((path or DISTRIBUTIONS_PATH).read_text(encoding="utf-8"))
-    return payload
+    from backend.repo import freshness_status
+
+    kept: list[dict] = []
+    for row in payload.get("distributions") or []:
+        verified = _parse_last_verified_utc(str(row.get("last_verified") or ""))
+        if verified is not None and freshness_status(verified) == "refused":
+            continue
+        kept.append(row)
+    return {"distributions": kept, "last_compiled": payload.get("last_compiled")}
 
 
 @lru_cache(maxsize=4)
@@ -272,14 +285,18 @@ def _diet_status(intent: Intent, *, source: str) -> DietMatch:
     return "not_confirmed"
 
 
-def _place_sort_key(place: RankedPlace) -> tuple:
-    return (
-        0 if place.open_for_request else 1,
-        _ARR_RANK.get(place.match.arrondissement, 3),
-        0 if place.match.diet == "match" else 1,
-        place.price_eur,
-        place.id,
-    )
+def _place_sort_key(place: RankedPlace, selected_arr: int | None) -> tuple:
+    open_key = 0 if place.open_for_request else 1
+    diet_key = 0 if place.match.diet == "match" else 1
+    if selected_arr is not None:
+        return (
+            _ARR_RANK.get(place.match.arrondissement, 3),
+            open_key,
+            diet_key,
+            place.price_eur,
+            place.id,
+        )
+    return (open_key, diet_key, place.price_eur, place.id)
 
 
 def _derived_score(place: RankedPlace) -> float:
@@ -446,7 +463,8 @@ def rank_places(
             )
         )
 
-    candidates.sort(key=_place_sort_key)
+    sort_key = lambda p: _place_sort_key(p, intent.arrondissement)
+    candidates.sort(key=sort_key)
 
     slot = meal_to_crous_slot(intent.meal)
     to_fetch = [
@@ -472,7 +490,8 @@ def rank_places(
         with ThreadPoolExecutor(max_workers=min(6, len(to_fetch))) as pool:
             list(pool.map(_fetch_menu, to_fetch))
 
-    candidates.sort(key=_place_sort_key)
+    sort_key = lambda p: _place_sort_key(p, intent.arrondissement)
+    candidates.sort(key=sort_key)
     if intent.arrondissement is not None:
         exact_n = sum(1 for p in candidates if p.match.arrondissement == "exact")
         if exact_n >= MIN_EXACT_ARRONDISSEMENT_RESULTS:
