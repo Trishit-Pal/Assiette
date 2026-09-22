@@ -267,6 +267,40 @@ def test_retrieve_fail_open_when_database_is_down(monkeypatch):
     assert compose.json().get("engine") == "template"
 
 
+def test_query_fail_open_when_database_is_down(monkeypatch):
+    from sqlalchemy.exc import OperationalError
+
+    from backend.services import query_service as qs
+
+    def boom(*_args, **_kwargs):
+        raise OperationalError("SELECT 1", {}, Exception("down"))
+
+    monkeypatch.setattr("backend.services.retrieval_service.current_data_version", boom)
+    orig = qs.retrieve_response
+
+    def blank_version(db, req, *, parse_query=True):
+        body, payload = orig(db, req, parse_query=parse_query)
+        body.data_version = ""
+        payload["data_version"] = ""
+        return body, payload
+
+    monkeypatch.setattr(qs, "retrieve_response", blank_version)
+    client = TestClient(app)
+    resp = client.post(
+        "/query",
+        json={"arrondissement": 5, "meal": "lunch", "use_network": False},
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data.get("data_version") == "snapshot"
+    assert data.get("engine") == "template"
+    places = data.get("places") or []
+    assert places
+    allowed = {p["id"] for p in places}
+    for stop in data.get("stops") or []:
+        assert stop["id"] in allowed
+
+
 def test_retrieve_rejects_invalid_arrondissement():
     client = TestClient(app)
     resp = client.get("/retrieve", params={"arrondissement": 21, "use_network": False})

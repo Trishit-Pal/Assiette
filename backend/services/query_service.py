@@ -24,7 +24,6 @@ from backend.models.schemas import (
 from backend.observability import get_logger
 from backend.repo import VenueRepository
 from backend.services.retrieval_service import (
-    current_data_version,
     intent_from_payload,
     place_to_out,
     ranked_from_cached,
@@ -177,7 +176,7 @@ def run_query(db: Session, req: QueryRequest) -> QueryResponse:
         meta=retrieved.meta,
         refreshed_at=retrieved.refreshed_at,
         offline_mode=retrieved.offline_mode,
-        data_version=retrieved.data_version or current_data_version(db),
+        data_version=retrieved.data_version or "snapshot",
         generated_at=datetime.now(timezone.utc),
         sources=retrieved.sources,
     )

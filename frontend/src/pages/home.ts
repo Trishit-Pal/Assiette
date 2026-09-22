@@ -98,7 +98,9 @@ function paintCopy(target: HTMLElement, data: QueryResponse, composing: boolean)
       el("span", { class: "freshness-age" }, `${t("lastRefresh")}: ${ageText(data.generated_at || data.refreshed_at)}`),
     ),
   );
-  if (data.offline_mode) target.append(el("p", { class: "banner" }, t("snapshotBanner")));
+  if (data.offline_mode || data.data_version === "snapshot") {
+    target.append(el("p", { class: "banner" }, t("snapshotBanner")));
+  }
   if (data.meta && data.meta.arrondissement_relaxed_to_nearby) {
     target.append(el("p", { class: "caveat" }, t("nearbyBanner")));
   }

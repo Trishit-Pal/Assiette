@@ -1,11 +1,21 @@
 import importlib
-from unittest.mock import MagicMock
 
+import pytest
 from fastapi.testclient import TestClient
+from unittest.mock import MagicMock
 
 from backend.config import get_settings
 
 _VALID = "a" * 32
+
+
+@pytest.fixture(autouse=True)
+def _restore_api_after_reload():
+    yield
+    get_settings.cache_clear()
+    import backend.api as api_mod
+
+    importlib.reload(api_mod)
 
 
 def _client(monkeypatch, token: str | None = "") -> TestClient:
@@ -47,7 +57,8 @@ def test_refresh_rejects_wrong_bearer(monkeypatch):
 
 
 def test_refresh_accepts_valid_bearer(monkeypatch):
-    monkeypatch.setattr("backend.routers.admin.run_pipeline", MagicMock())
+    pipeline = MagicMock()
+    monkeypatch.setattr("backend.routers.admin.run_pipeline", pipeline)
     client = _client(monkeypatch, _VALID)
     resp = client.post(
         "/internal/refresh",
@@ -56,3 +67,4 @@ def test_refresh_accepts_valid_bearer(monkeypatch):
     )
     assert resp.status_code == 202
     assert resp.json()["status"] == "running"
+    pipeline.assert_called_once()
